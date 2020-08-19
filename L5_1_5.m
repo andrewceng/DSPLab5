@@ -1,0 +1,17 @@
+S =@(n) (0.4/(sin(w1/2)))*sin(w1.*n+w1/2)+(0.4/(sin(w3/2)))*sin(w3.*n+w3/2)+0.2*cos(w5.*n);
+n = 0:9;
+sn = S(n);
+w = linspace(0,2*pi, 201);
+Sw = freqz(sn,1,w);
+sw1 = sw(w);
+DTFT = S(w);
+Sk =@(k) 2*(1-(-1).^k)./(1-exp(-j*pi.*k./5));
+k = 1:9;
+DFT = [0, Sk(k)];
+DFT_fft = fft(sn,10);
+sk = 2.*((1-(-1).^k)./(1-exp((-i.*pi.*k)./5)));
+DTFT1 = [0, DTFT];
+err1 = isequaln(Sw, DTFT);
+c = err1/5;
+DFT_and_DFTfft_ERR = norm(DFT - DFT_fft)
+Sw_and_DTFT_ERR = norm(Sw-DTFT)*c
